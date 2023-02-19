@@ -45,6 +45,12 @@ boolean yawButtonPushed = false;
 boolean pitchSetHigh = false;
 boolean yawSetHigh = false;
 
+// Last button pushed control variables
+// false = left/up
+// true = right/down
+boolean lastPushedPitch = false;
+boolean lastPushedYaw = false;
+
 /*
  * Pulse timing
  * 
@@ -141,22 +147,22 @@ void runMotors() {
   if ((currMicros - prevStepMicros) >= microsBetweenSteps) {
     prevStepMicros = currMicros;
 
-    if (pitchButtonPushed) {
+    if (pitchButtonPushed && !pitchSetHigh) {
       digitalWrite(pitchDirPin, setPitchDir);
       digitalWrite(pitchStepPin, HIGH);
       pitchSetHigh = true;
     }
-    if (pitchSetHigh) {
+    else if (pitchSetHigh) {
       digitalWrite(pitchStepPin, LOW);
       pitchSetHigh = false;
     }
     
-    if (yawButtonPushed) {
+    if (yawButtonPushed && !yawSetHigh) {
       digitalWrite(yawDirPin, setYawDir);
       digitalWrite(yawStepPin, HIGH);
       yawSetHigh = true;
     }
-    if (yawSetHigh) {
+    else if (yawSetHigh) {
       digitalWrite(yawStepPin, LOW);
       yawSetHigh = false;
     }
